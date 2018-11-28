@@ -25,9 +25,6 @@ pthread_mutex_t q3_lock;
 
 pthread_mutex_t printLock;
 
-queue<int> printQueue(queue<int> q)
-{
-}
 
 void initSemAndMtx()
 {
@@ -62,14 +59,14 @@ void *chefXFunc(void *arg)
 
         pthread_mutex_lock(&q1_lock);
 
-        sleep(2);
+        //sleep(1);
         q1.push(chocolateCake);
 
         pthread_mutex_lock(&printLock);
 
         cout << "---------------------------------------------" << endl;
         cout << "Chef X pushed a chocolate cake in Queue 1." << endl;
-        cout << "After pushing, Queue 1: ";
+        cout << "After pushing, size of Queue 1 becomes: " << q1.size() << endl << "Updated Queue 1: ";
 
         queue<int> tem;
 
@@ -109,14 +106,14 @@ void *chefYFunc(void *arg)
 
         pthread_mutex_lock(&q1_lock);
 
-        sleep(2);
+        //sleep(1);
         q1.push(vanillaCake);
 
         pthread_mutex_lock(&printLock);
 
         cout << "---------------------------------------------" << endl;
         cout << "Chef Y pushed a vanilla cake in Queue 1." << endl;
-        cout << "After pushing, Queue 1: ";
+        cout << "After pushing, size of Queue 1 becomes: " << q1.size() << endl << "Updated Queue 1: ";
 
         queue<int> tem;
         while (!q1.empty())
@@ -157,7 +154,7 @@ void *chefZFunc(void *arg)
 
         pthread_mutex_lock(&q1_lock);
 
-        sleep(2);
+        //sleep(1);
         int poppedCake;
         poppedCake = q1.front();
 
@@ -179,7 +176,7 @@ void *chefZFunc(void *arg)
 
         cout << "---------------------------------------------" << endl;
         cout << "Chef Z popped a " << cakeName << " from Queue 1." << endl;
-        cout << "After popping, Queue 1: ";
+        cout << "After popping, size of Queue 1 becomes: " << q1.size() << endl << "Updated Queue 1: ";
 
         while (!q1.empty())
         {
@@ -211,7 +208,7 @@ void *chefZFunc(void *arg)
 
             pthread_mutex_lock(&q3_lock);
 
-            sleep(2);
+            //sleep(1);
 
             q3.push(chocolateCake);
 
@@ -219,7 +216,7 @@ void *chefZFunc(void *arg)
 
             cout << "---------------------------------------------" << endl;
             cout << "Chef Z pushed the Chocolate cake in Queue 3." << endl;
-            cout << "After pushing, Queue 3: ";
+            cout << "After pushing, size of Queue 3 becomes: " << q3.size() << endl << "Updated Queue 3: ";
 
             queue<int> tem;
 
@@ -251,18 +248,18 @@ void *chefZFunc(void *arg)
 
             pthread_mutex_lock(&q2_lock);
 
-            sleep(2);
+            //sleep(1);
 
-            q3.push(vanillaCake);
+            q2.push(vanillaCake);
 
             pthread_mutex_lock(&printLock);
 
             cout << "---------------------------------------------" << endl;
             cout << "Chef Z pushed the Vanilla cake in Queue 2." << endl;
-            cout << "After pushing, Queue 2: ";
+            cout << "After pushing, size of Queue 2 becomes: " << q2.size() << endl << "Updated Queue 2: ";
 
             queue<int> tem;
-            
+
             while (!q2.empty())
             {
                 int v = q2.front();
@@ -290,10 +287,108 @@ void *chefZFunc(void *arg)
 
 void *waiter1Func(void *arg)
 {
+    pthread_mutex_lock(&printLock);
+    printf("%s\n\n", (char *)arg);
+    pthread_mutex_unlock(&printLock);
+
+    while (true)
+    {
+        int u;
+
+        sem_wait(&q3_Full);
+
+        pthread_mutex_lock(&q3_lock);
+
+        //sleep(1);
+        int poppedCake;
+        poppedCake = q3.front();
+
+        q3.pop();
+
+        queue<int> tem;
+
+        pthread_mutex_lock(&printLock);
+
+        
+        cout << "---------------------------------------------" << endl;
+        cout << "Waiter 1 popped a Chocolate Cake from Queue 3." << endl;
+        cout << "After popping, size of Queue 3 becomes: " << q3.size() << endl << "Updated Queue 3: ";
+
+        while (!q3.empty())
+        {
+            u = q3.front();
+            q3.pop();
+            tem.push(u);
+        }
+
+        while (!tem.empty())
+        {
+            int u = tem.front();
+            cout << u << " ";
+            tem.pop();
+            q3.push(u);
+        }
+        cout << endl;
+
+        pthread_mutex_unlock(&printLock);
+
+        pthread_mutex_unlock(&q3_lock);
+
+        sem_post(&q3_Empty);
+    }
 }
 
 void *waiter2Func(void *arg)
 {
+    pthread_mutex_lock(&printLock);
+    printf("%s\n\n", (char *)arg);
+    pthread_mutex_unlock(&printLock);
+
+    while (true)
+    {
+        int u;
+
+        sem_wait(&q2_Full);
+
+        pthread_mutex_lock(&q2_lock);
+
+        //sleep(1);
+        int poppedCake;
+        poppedCake = q2.front();
+
+        q2.pop();
+
+        queue<int> tem;
+
+        pthread_mutex_lock(&printLock);
+
+        
+        cout << "---------------------------------------------" << endl;
+        cout << "Waiter 2 popped a Vanilla Cake from Queue 2." << endl;
+        cout << "After popping, size of Queue 2 becomes: " << q2.size() << endl << "Updated Queue 2: ";
+
+        while (!q2.empty())
+        {
+            u = q2.front();
+            q2.pop();
+            tem.push(u);
+        }
+
+        while (!tem.empty())
+        {
+            int u = tem.front();
+            cout << u << " ";
+            tem.pop();
+            q2.push(u);
+        }
+        cout << endl;
+
+        pthread_mutex_unlock(&printLock);
+
+        pthread_mutex_unlock(&q2_lock);
+
+        sem_post(&q2_Empty);
+    }
 }
 
 int main()
