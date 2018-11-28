@@ -410,7 +410,6 @@ int main()
     pthread_create(&waiter1, NULL, waiter1Func, (void *)"Waiter 1 started.");
     pthread_create(&waiter2, NULL, waiter2Func, (void *)"Waiter 2 started.");
 
-    while (1)
-        ;
+    while (1);
     return 0;
 }
