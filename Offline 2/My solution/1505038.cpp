@@ -59,7 +59,7 @@ void *chefXFunc(void *arg)
 
         pthread_mutex_lock(&q1_lock);
 
-        //sleep(1);
+        sleep(1);
         q1.push(chocolateCake);
 
         pthread_mutex_lock(&printLock);
@@ -106,7 +106,7 @@ void *chefYFunc(void *arg)
 
         pthread_mutex_lock(&q1_lock);
 
-        //sleep(1);
+        sleep(1);
         q1.push(vanillaCake);
 
         pthread_mutex_lock(&printLock);
@@ -154,7 +154,7 @@ void *chefZFunc(void *arg)
 
         pthread_mutex_lock(&q1_lock);
 
-        //sleep(1);
+        sleep(1);
         int poppedCake;
         poppedCake = q1.front();
 
@@ -200,7 +200,6 @@ void *chefZFunc(void *arg)
 
         sem_post(&q1_Empty);
 
-        ///////////////////////////////////////////////////////////
 
         if (u == chocolateCake)
         {
@@ -208,7 +207,7 @@ void *chefZFunc(void *arg)
 
             pthread_mutex_lock(&q3_lock);
 
-            //sleep(1);
+            sleep(1);
 
             q3.push(chocolateCake);
 
@@ -248,7 +247,7 @@ void *chefZFunc(void *arg)
 
             pthread_mutex_lock(&q2_lock);
 
-            //sleep(1);
+            sleep(1);
 
             q2.push(vanillaCake);
 
@@ -299,7 +298,7 @@ void *waiter1Func(void *arg)
 
         pthread_mutex_lock(&q3_lock);
 
-        //sleep(1);
+        sleep(1);
         int poppedCake;
         poppedCake = q3.front();
 
@@ -352,7 +351,7 @@ void *waiter2Func(void *arg)
 
         pthread_mutex_lock(&q2_lock);
 
-        //sleep(1);
+        sleep(1);
         int poppedCake;
         poppedCake = q2.front();
 
