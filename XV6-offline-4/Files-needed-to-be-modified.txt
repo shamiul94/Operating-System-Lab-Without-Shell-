@@ -1,9 +1,9 @@
+I found it here - https://stackoverflow.com/a/13205101/6220955
+--------------------------------------------------------------
 syscall.h
 syscall.c 
 sysproc.c
 myUser1.c 
 defs.h 
-stat.h 
-types.h 
 user.h 
 usys.S 
