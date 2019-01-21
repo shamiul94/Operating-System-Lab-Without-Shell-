@@ -1,2 +1,4 @@
 # Operating-System-Lab-Without-Shell-
-Building a small subset of operating system in our sessional course of Operating system (CSE-314) in CSE, BUET.
+## Offline 1
+Writing a shell file to check if submitted files of students are submitted as per instruction and marking them based on it. 
+## 
