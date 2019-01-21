@@ -1,5 +1,6 @@
 # Operating-System-Lab-Without-Shell-
 ## Offline 1
-Writing a shell file to check if submitted files of students are submitted as per instruction and marking them based on it. 
+This is problem on Inter process communication of operating system (IPC). The specification of the problem is given as pdf. 
 ## Offline 2 
 Adding a system call to XV6. 
+
